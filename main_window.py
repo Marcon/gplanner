@@ -66,10 +66,8 @@ class MainWindow(QMainWindow):
         self.delete_button.clicked.connect(self.on_delete_splitter)
 
     def init_tree(self):
-        #self.tree_widget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree_widget.addTopLevelItem(RootItem())
         self.tree_widget.currentItemChanged.connect(self.on_current_changed)
-        #self.tree_widget.connect(SIGNAL('customContextMenuRequested(QPoint)'), self.on_custom_menu_requested)
 
     def init_splitter_type_spin(self):
         for t in SPLITTER_TYPES:
@@ -96,9 +94,3 @@ class MainWindow(QMainWindow):
         parent = self.current_item.parent
         self.current_item.parent = None
         parent.removeChild(self.current_item)
-
-
-    # @staticmethod
-    # def on_add_splitter(item, splitter_cls):
-    #     item.addChild(splitter_cls(item))
-    #     item.setExpanded(True)

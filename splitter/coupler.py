@@ -34,8 +34,8 @@ class Coupler(AbstractSplitterItem):
         self.add_drops()
 
     def add_drops(self):
-        self.addChild(Drop(self, 'Line', self.line_att))
         self.addChild(Drop(self, 'Drop', self.drop_att))
+        self.addChild(Drop(self, 'Line', self.line_att))
         self.setExpanded(True)
 
 
