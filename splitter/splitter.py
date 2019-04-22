@@ -34,7 +34,7 @@ class AbstractSplitterItem(QTreeWidgetItem):
         self.fiber_length = fiber_length
         self.splitter_att = splitter_att
         self.setText(TITLE_COLUMN, item_title)
-        self.setText(SIGNAL_ATT_COLUMN, str(self.signal_attenuation()))
+        self.setText(SIGNAL_ATT_COLUMN, "%.2f" % self.signal_attenuation())
         self.setText(FIBER_LENGTH_COLUMN, str(self.fiber_length)+'km')
         self.update_free_connectors()
 
