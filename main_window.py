@@ -100,13 +100,13 @@ class MainWindow(QMainWindow):
             return
         child = SPLITTER_TYPES[self.splitter_type_combo.currentIndex()][1](self.current_item,
                                                                            self.fiber_length_spin.value())
-        self.current_item.addChild(child)
+        self.current_item.add_child(child)
         self.current_item.setExpanded(True)
 
     def on_delete_splitter(self):
         parent = self.current_item.parent
         self.current_item.parent = None
-        parent.removeChild(self.current_item)
+        parent.remove_child(self.current_item)
 
     def on_exit(self):
         self.app.quit()

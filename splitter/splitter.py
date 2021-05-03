@@ -54,12 +54,12 @@ class AbstractSplitterItem(QTreeWidgetItem):
         self.fiber_length = length
         self.setText(FIBER_LENGTH_COLUMN, str(self.fiber_length) + 'km')
 
-    def addChild(self, child):
+    def add_child(self, child):
         super().addChild(child)
         child.set_parent(self)
         self.update_free_connectors()
 
-    def removeChild(self, child):
+    def remove_child(self, child):
         super().removeChild(child)
         self.update_free_connectors()
 

@@ -58,12 +58,12 @@ class SplitterJSONDecoder(json.JSONDecoder):
             line.set_attenuation(result.line_att)
             result.takeChildren()
 
-            result.addChild(drop)
-            result.addChild(line)
+            result.add_child(drop)
+            result.add_child(line)
             return result
 
         for child in obj['childs']:
-            result.addChild(child)
+            result.add_child(child)
 
         return result
 
