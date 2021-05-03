@@ -6,6 +6,8 @@ class MainWindowUI(object):
         self.main_window = main_window
         self.status_bar = None
         self.action_file_exit = None
+        self.action_file_save = None
+        self.action_file_save_as = None
         self.tree_widget = None
         self.add_splitter_button = None
         self.delete_splitter_button = None
@@ -25,6 +27,10 @@ class MainWindowUI(object):
         menu_bar = QtWidgets.QMenuBar(self.main_window)
         menu_file = QtWidgets.QMenu('&File', menu_bar)
         self.action_file_exit = QtWidgets.QAction('&Exit', self.main_window)
+        self.action_file_save = QtWidgets.QAction('&Save', self.main_window)
+        self.action_file_save_as = QtWidgets.QAction('Save &as', self.main_window)
+        menu_file.addAction(self.action_file_save)
+        menu_file.addAction(self.action_file_save_as)
         menu_file.addAction(self.action_file_exit)
         menu_bar.addAction(menu_file.menuAction())
         self.main_window.setMenuBar(menu_bar)

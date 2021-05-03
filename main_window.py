@@ -14,11 +14,15 @@
 #     You should have received a copy of the GNU General Public License
 #     along with gplanner.  If not, see <https://www.gnu.org/licenses/>.
 
-from PySide2.QtWidgets import QMainWindow
+from PySide2.QtWidgets import QMainWindow, QFileDialog, QMessageBox
 from ui.main_window import MainWindowUI
 from splitter.planar import *
 from splitter.coupler import *
 from splitter.splitter import ONU
+from splitter.json import *
+
+import json
+import os
 
 SPLITTER_TYPES = (
     ('Planar 1x2', Splitter1x2),
@@ -51,6 +55,9 @@ class MainWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
         self.app = app
+        self.root_item = None
+        self.save_path = None
+        self.current_item = None
         self.ui = MainWindowUI(self)
         self.tree_widget = self.ui.tree_widget
         self.add_button = self.ui.add_splitter_button
@@ -64,9 +71,12 @@ class MainWindow(QMainWindow):
         self.add_button.clicked.connect(self.on_add_splitter)
         self.delete_button.clicked.connect(self.on_delete_splitter)
         self.ui.action_file_exit.triggered.connect(self.on_exit)
+        self.ui.action_file_save.triggered.connect(self.on_save)
+        self.ui.action_file_save_as.triggered.connect(self.on_save_as)
 
     def init_tree(self):
-        self.tree_widget.addTopLevelItem(RootItem())
+        self.root_item = RootItem()
+        self.tree_widget.addTopLevelItem(self.root_item)
         self.tree_widget.currentItemChanged.connect(self.on_current_changed)
 
     def init_splitter_type_spin(self):
@@ -97,3 +107,31 @@ class MainWindow(QMainWindow):
 
     def on_exit(self):
         self.app.quit()
+
+    def on_save_as(self):
+        save_path = QFileDialog.getSaveFileName(self, 'Select file to save', filter='GPlannerSave (*.gpsave)',
+                                                options=QFileDialog.DontConfirmOverwrite)
+        if not save_path[0]:
+            return
+
+        if os.path.isfile(save_path[0]):
+            reply = QMessageBox.question(self, 'File already exists', 'Save file already exists. Overwrite?',
+                                         QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.No:
+                return
+        self.save_path = save_path[0]
+        self.save_data()
+
+    def on_save(self):
+        if not self.save_path:
+            self.on_save_as()
+        else:
+            self.save_data()
+
+    def save_data(self):
+        try:
+            with open(self.save_path, 'w') as sf:
+                json.dump(self.root_item, sf, cls=SplitterJSONEncoder)
+        except IOError as e:
+            QMessageBox.critical(self, 'Error', 'Failed to save data: %s' % str(e))
+
