@@ -19,7 +19,7 @@ from ui.main_window import MainWindowUI
 from splitter.planar import *
 from splitter.coupler import *
 from splitter.splitter import ONU
-from splitter.json import *
+from splitter.json import SplitterJSONEncoder, SplitterJSONDecoder
 
 import json
 import os
@@ -73,6 +73,7 @@ class MainWindow(QMainWindow):
         self.ui.action_file_exit.triggered.connect(self.on_exit)
         self.ui.action_file_save.triggered.connect(self.on_save)
         self.ui.action_file_save_as.triggered.connect(self.on_save_as)
+        self.ui.action_file_open.triggered.connect(self.on_open)
 
     def init_tree(self):
         self.root_item = RootItem()
@@ -85,11 +86,13 @@ class MainWindow(QMainWindow):
 
     @staticmethod
     def _can_add_childs(item):
+        if item is None:
+            return False
         return item.childCount() < item.max_childs
 
     def on_current_changed(self, current, previous):
         self.current_item = current
-        self.delete_button.setEnabled(not current.is_root)
+        self.delete_button.setEnabled(current is None or not current.is_root)
         self.add_button.setEnabled(self._can_add_childs(current))
 
     def on_add_splitter(self):
@@ -127,6 +130,24 @@ class MainWindow(QMainWindow):
             self.on_save_as()
         else:
             self.save_data()
+
+    def on_open(self):
+        open_path = QFileDialog.getOpenFileName(self, 'Select file to open', filter='GPlannerSave (*.gpsave)')
+        if not open_path[0]:
+            return
+
+        self.save_path = open_path[0]
+        self.load_data()
+
+    def load_data(self):
+        try:
+            with open(self.save_path, 'r') as lf:
+                obj = json.load(lf, cls=SplitterJSONDecoder)
+                self.root_item = obj
+                self.tree_widget.clear()
+                self.tree_widget.addTopLevelItem(obj)
+        except IOError as e:
+            QMessageBox.critical(self, 'Error', 'Failed to load data: %s' % str(e))
 
     def save_data(self):
         try:
