@@ -31,15 +31,32 @@ class AbstractSplitterItem(QTreeWidgetItem):
     def __init__(self, parent=None, item_title='Undefined', splitter_att=0.0, fiber_length=0):
         super().__init__(parent, 0)
         self.parent = parent
-        self.fiber_length = fiber_length
-        self.splitter_att = splitter_att
+        self.fiber_length = 0
+        self.splitter_att = 0.0
         self.setText(TITLE_COLUMN, item_title)
-        self.setText(SIGNAL_ATT_COLUMN, "%.2f" % self.signal_attenuation())
-        self.setText(FIBER_LENGTH_COLUMN, str(self.fiber_length)+'km')
+        self.set_attenuation(splitter_att)
         self.update_free_connectors()
+
+    def update_attenuation(self):
+        self.setText(SIGNAL_ATT_COLUMN, "%.2f" % self.signal_attenuation())
+        for i in range(self.childCount()):
+            self.child(i).update_attenuation()
+
+    def set_parent(self, parent):
+        self.parent = parent
+        self.update_attenuation()
+
+    def set_attenuation(self, att):
+        self.splitter_att = att
+        self.update_attenuation()
+
+    def set_fiber_length(self, length):
+        self.fiber_length = length
+        self.setText(FIBER_LENGTH_COLUMN, str(self.fiber_length) + 'km')
 
     def addChild(self, child):
         super().addChild(child)
+        child.set_parent(self)
         self.update_free_connectors()
 
     def removeChild(self, child):
