@@ -14,9 +14,8 @@
 #     You should have received a copy of the GNU General Public License
 #     along with gplanner.  If not, see <https://www.gnu.org/licenses/>.
 
-from PySide2.QtWidgets import QMainWindow, QTreeWidgetItem, QMenu, QAction
-from PySide2.QtCore import Qt, SLOT, SIGNAL
-from ui.main_window import Ui_MainWindow
+from PySide2.QtWidgets import QMainWindow
+from ui.main_window import MainWindowUI
 from splitter.planar import *
 from splitter.coupler import *
 from splitter.splitter import ONU
@@ -51,13 +50,12 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        self.tree_widget = self.ui.treeWidget
-        self.add_button = self.ui.addSplitterButton
-        self.delete_button = self.ui.deleteSplitterButton
-        self.splitter_type_combo = self.ui.splitterTypeCombo
-        self.fiber_length_spin = self.ui.fiberLengthSpin
+        self.ui = MainWindowUI(self)
+        self.tree_widget = self.ui.tree_widget
+        self.add_button = self.ui.add_splitter_button
+        self.delete_button = self.ui.delete_splitter_button
+        self.splitter_type_combo = self.ui.splitter_type_combo
+        self.fiber_length_spin = self.ui.fiber_length_spin
         self.init_tree()
         self.init_splitter_type_spin()
         self.current_item = None

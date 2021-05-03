@@ -1,90 +1,61 @@
-# -*- coding: utf-8 -*-
+from PySide2 import QtCore, QtWidgets
 
-# Form implementation generated from reading ui file 'main_window.ui',
-# licensing of 'main_window.ui' applies.
-#
-# Created: Wed Mar 13 16:55:42 2019
-#      by: pyside2-uic  running on PySide2 5.12.1
-#
-# WARNING! All changes made in this file will be lost!
 
-from PySide2 import QtCore, QtGui, QtWidgets
+class MainWindowUI(object):
+    def __init__(self, main_window):
+        self.main_window = main_window
+        self.status_bar = None
+        self.action_file_exit = None
+        self.tree_widget = None
+        self.add_splitter_button = None
+        self.delete_splitter_button = None
+        self.splitter_type_combo = None
+        self.fiber_length_spin = None
+        self.setup()
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(784, 609)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setObjectName("gridLayout")
-        self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
-        self.treeWidget.setObjectName("treeWidget")
-        self.verticalLayout.addWidget(self.treeWidget)
-        self.gridLayout_2 = QtWidgets.QGridLayout()
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setObjectName("label")
-        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
-        self.fiberLengthSpin = QtWidgets.QDoubleSpinBox(self.centralwidget)
-        self.fiberLengthSpin.setObjectName("fiberLengthSpin")
-        self.gridLayout_2.addWidget(self.fiberLengthSpin, 1, 1, 1, 1)
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setObjectName("label_2")
-        self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
-        self.splitterTypeCombo = QtWidgets.QComboBox(self.centralwidget)
-        self.splitterTypeCombo.setObjectName("splitterTypeCombo")
-        self.gridLayout_2.addWidget(self.splitterTypeCombo, 0, 1, 1, 1)
-        self.addSplitterButton = QtWidgets.QPushButton(self.centralwidget)
-        self.addSplitterButton.setObjectName("addSplitterButton")
-        self.gridLayout_2.addWidget(self.addSplitterButton, 0, 2, 1, 1)
-        self.deleteSplitterButton = QtWidgets.QPushButton(self.centralwidget)
-        self.deleteSplitterButton.setObjectName("deleteSplitterButton")
-        self.gridLayout_2.addWidget(self.deleteSplitterButton, 1, 2, 1, 1)
-        self.verticalLayout.addLayout(self.gridLayout_2)
-        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 784, 32))
-        self.menubar.setObjectName("menubar")
-        self.menuFile = QtWidgets.QMenu(self.menubar)
-        self.menuFile.setObjectName("menuFile")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.actionExit = QtWidgets.QAction(MainWindow)
-        self.actionExit.setObjectName("actionExit")
-        self.actionSave = QtWidgets.QAction(MainWindow)
-        self.actionSave.setObjectName("actionSave")
-        self.actionSave_as = QtWidgets.QAction(MainWindow)
-        self.actionSave_as.setObjectName("actionSave_as")
-        self.actionOpen = QtWidgets.QAction(MainWindow)
-        self.actionOpen.setObjectName("actionOpen")
-        self.menuFile.addAction(self.actionOpen)
-        self.menuFile.addAction(self.actionSave)
-        self.menuFile.addAction(self.actionSave_as)
-        self.menuFile.addAction(self.actionExit)
-        self.menubar.addAction(self.menuFile.menuAction())
+    def setup(self):
+        self.main_window.setWindowTitle('GPlanner')
+        self.main_window.resize(800, 600)
+        self.setup_menu_bar()
+        self.setup_status_bar()
+        self.setup_central_widget()
+        QtCore.QMetaObject.connectSlotsByName(self.main_window)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    def setup_menu_bar(self):
+        menu_bar = QtWidgets.QMenuBar(self.main_window)
+        menu_file = QtWidgets.QMenu('&File', menu_bar)
+        self.action_file_exit = QtWidgets.QAction('&Exit', self.main_window)
+        menu_file.addAction(self.action_file_exit)
+        menu_bar.addAction(menu_file.menuAction())
+        self.main_window.setMenuBar(menu_bar)
 
-    def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
-        self.treeWidget.headerItem().setText(0, QtWidgets.QApplication.translate("MainWindow", "Type", None, -1))
-        self.treeWidget.headerItem().setText(1, QtWidgets.QApplication.translate("MainWindow", "Signal attenuation", None, -1))
-        self.treeWidget.headerItem().setText(2, QtWidgets.QApplication.translate("MainWindow", "Fiber length", None, -1))
-        self.treeWidget.headerItem().setText(3, QtWidgets.QApplication.translate("MainWindow", "Free connectors", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "Equipment type", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "Fiber length(km)", None, -1))
-        self.addSplitterButton.setText(QtWidgets.QApplication.translate("MainWindow", "Add Equipment", None, -1))
-        self.deleteSplitterButton.setText(QtWidgets.QApplication.translate("MainWindow", "Delete Equipment", None, -1))
-        self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "F&ile", None, -1))
-        self.actionExit.setText(QtWidgets.QApplication.translate("MainWindow", "&Exit", None, -1))
-        self.actionSave.setText(QtWidgets.QApplication.translate("MainWindow", "&Save", None, -1))
-        self.actionSave_as.setText(QtWidgets.QApplication.translate("MainWindow", "Save &as", None, -1))
-        self.actionOpen.setText(QtWidgets.QApplication.translate("MainWindow", "&Open", None, -1))
+    def setup_status_bar(self):
+        self.status_bar = QtWidgets.QStatusBar(self.main_window)
+        self.main_window.setStatusBar(self.status_bar)
 
+    def setup_central_widget(self):
+        central_widget = QtWidgets.QWidget(self.main_window)
+        self.tree_widget = QtWidgets.QTreeWidget(central_widget)
+        self.tree_widget.setHeaderLabels(('Type', 'Signal attenuation', 'Fiber length', 'Free connectors'))
+
+        main_layout = QtWidgets.QVBoxLayout(central_widget)
+
+        controls_layout = QtWidgets.QGridLayout()
+        equipment_type_label = QtWidgets.QLabel('Equipment type', central_widget)
+        fiber_length_label = QtWidgets.QLabel('Fiber length(km)', central_widget)
+        self.splitter_type_combo = QtWidgets.QComboBox(central_widget)
+        self.fiber_length_spin = QtWidgets.QDoubleSpinBox(central_widget)
+        self.add_splitter_button = QtWidgets.QPushButton('Add Equipment', central_widget)
+        self.delete_splitter_button = QtWidgets.QPushButton('Delete Equipment', central_widget)
+
+        controls_layout.addWidget(equipment_type_label, 0, 0, 1, 1)
+        controls_layout.addWidget(fiber_length_label, 1, 0, 1, 1)
+        controls_layout.addWidget(self.splitter_type_combo, 0, 1, 1, 1)
+        controls_layout.addWidget(self.fiber_length_spin, 1, 1, 1, 1)
+        controls_layout.addWidget(self.add_splitter_button, 0, 2, 1, 1)
+        controls_layout.addWidget(self.delete_splitter_button, 1, 2, 1, 1)
+
+        main_layout.addWidget(self.tree_widget)
+        main_layout.addLayout(controls_layout)
+
+        self.main_window.setCentralWidget(central_widget)
