@@ -48,8 +48,9 @@ SPLITTER_TYPES = (
 
 class MainWindow(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, app):
         super().__init__()
+        self.app = app
         self.ui = MainWindowUI(self)
         self.tree_widget = self.ui.tree_widget
         self.add_button = self.ui.add_splitter_button
@@ -62,6 +63,7 @@ class MainWindow(QMainWindow):
 
         self.add_button.clicked.connect(self.on_add_splitter)
         self.delete_button.clicked.connect(self.on_delete_splitter)
+        self.ui.action_file_exit.triggered.connect(self.on_exit)
 
     def init_tree(self):
         self.tree_widget.addTopLevelItem(RootItem())
@@ -92,3 +94,6 @@ class MainWindow(QMainWindow):
         parent = self.current_item.parent
         self.current_item.parent = None
         parent.removeChild(self.current_item)
+
+    def on_exit(self):
+        self.app.quit()
