@@ -75,6 +75,7 @@ class MainWindow(QMainWindow):
         self.ui.action_file_save.triggered.connect(self.on_save)
         self.ui.action_file_save_as.triggered.connect(self.on_save_as)
         self.ui.action_file_open.triggered.connect(self.on_open)
+        self.ui.action_file_save_as_image.triggered.connect(self.on_save_as_image)
         self.ui.set_description_button.clicked.connect(self.on_set_equipment_description)
 
     def init_tree(self):
@@ -134,6 +135,13 @@ class MainWindow(QMainWindow):
                 return
         self.save_path = save_path[0]
         self.save_data()
+
+    def on_save_as_image(self):
+        save_path = QFileDialog.getSaveFileName(self, 'Select file to save image', filter='Images (*.jpg, *.png)')
+        if not save_path[0]:
+            return
+        pixmap = self.tree_widget.grab()
+        pixmap.save(save_path[0])
 
     def on_save(self):
         if not self.save_path:
