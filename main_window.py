@@ -146,8 +146,14 @@ class MainWindow(QMainWindow):
                 self.root_item = obj
                 self.tree_widget.clear()
                 self.tree_widget.addTopLevelItem(obj)
+                self.expand_children(self.root_item)
         except IOError as e:
             QMessageBox.critical(self, 'Error', 'Failed to load data: %s' % str(e))
+
+    def expand_children(self, tree_item):
+        tree_item.setExpanded(True)
+        for i in range(tree_item.childCount()):
+            self.expand_children(tree_item.child(i))
 
     def save_data(self):
         try:
