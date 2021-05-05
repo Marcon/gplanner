@@ -12,6 +12,8 @@ class MainWindowUI(object):
         self.tree_widget = None
         self.add_splitter_button = None
         self.delete_splitter_button = None
+        self.set_description_button = None
+        self.description_edit = None
         self.splitter_type_combo = None
         self.fiber_length_spin = None
         self.setup()
@@ -45,17 +47,21 @@ class MainWindowUI(object):
     def setup_central_widget(self):
         central_widget = QtWidgets.QWidget(self.main_window)
         self.tree_widget = QtWidgets.QTreeWidget(central_widget)
-        self.tree_widget.setHeaderLabels(('Type', 'Signal attenuation', 'Fiber length', 'Free connectors'))
+        self.tree_widget.setHeaderLabels(('Type', 'Signal attenuation', 'Fiber length', 'Free connectors', 'Description'))
 
         main_layout = QtWidgets.QVBoxLayout(central_widget)
 
         controls_layout = QtWidgets.QGridLayout()
         equipment_type_label = QtWidgets.QLabel('Equipment type', central_widget)
         fiber_length_label = QtWidgets.QLabel('Fiber length(km)', central_widget)
+        description_label = QtWidgets.QLabel('Description', central_widget)
         self.splitter_type_combo = QtWidgets.QComboBox(central_widget)
         self.fiber_length_spin = QtWidgets.QDoubleSpinBox(central_widget)
         self.add_splitter_button = QtWidgets.QPushButton('Add Equipment', central_widget)
         self.delete_splitter_button = QtWidgets.QPushButton('Delete Equipment', central_widget)
+        self.set_description_button = QtWidgets.QPushButton('Set description')
+        self.description_edit = QtWidgets.QLineEdit()
+        self.description_edit.setClearButtonEnabled(True)
 
         controls_layout.addWidget(equipment_type_label, 0, 0, 1, 1)
         controls_layout.addWidget(fiber_length_label, 1, 0, 1, 1)
@@ -63,6 +69,9 @@ class MainWindowUI(object):
         controls_layout.addWidget(self.fiber_length_spin, 1, 1, 1, 1)
         controls_layout.addWidget(self.add_splitter_button, 0, 2, 1, 1)
         controls_layout.addWidget(self.delete_splitter_button, 1, 2, 1, 1)
+        controls_layout.addWidget(description_label, 2, 0, 1, 1)
+        controls_layout.addWidget(self.description_edit, 2, 1, 1, 1)
+        controls_layout.addWidget(self.set_description_button, 2, 2, 1, 1)
 
         main_layout.addWidget(self.tree_widget)
         main_layout.addLayout(controls_layout)

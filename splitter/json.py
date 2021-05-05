@@ -5,7 +5,7 @@ import splitter.planar as planar_module
 import splitter.coupler as coupler_module
 from .coupler import *
 from .planar import RootItem
-from .splitter import TITLE_COLUMN
+from .splitter import TITLE_COLUMN, DESCRIPTION_COLUMN
 import json
 
 
@@ -16,6 +16,7 @@ class SplitterJSONEncoder(json.JSONEncoder):
                 'type': type(obj).__name__,
                 'fiber_length': obj.fiber_length,
                 'title': obj.text(TITLE_COLUMN),
+                'description': obj.text(DESCRIPTION_COLUMN),
                 'childs': [obj.child(i) for i in range(obj.childCount())]
             }
 
@@ -44,6 +45,9 @@ class SplitterJSONDecoder(json.JSONDecoder):
             result = class_(parent=None, title=obj['title'], att=0.0)
         else:
             result = class_(parent=None, fiber_length=obj['fiber_length'])
+
+        if 'description' in obj:
+            result.set_description(obj['description'])
 
         if class_.__name__.startswith('Coupler'):
             drop = None

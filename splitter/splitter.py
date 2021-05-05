@@ -20,6 +20,7 @@ TITLE_COLUMN = 0
 SIGNAL_ATT_COLUMN = 1
 FIBER_LENGTH_COLUMN = 2
 FREE_CONNECTORS_COLUMN = 3
+DESCRIPTION_COLUMN = 4
 
 FIBER_ATT = 0.36
 
@@ -33,9 +34,14 @@ class AbstractSplitterItem(QTreeWidgetItem):
         self.parent = parent
         self.fiber_length = 0
         self.splitter_att = 0.0
+        self.description = ''
         self.setText(TITLE_COLUMN, item_title)
+        self.setText(DESCRIPTION_COLUMN, '')
         self.set_attenuation(splitter_att)
         self.update_free_connectors()
+
+    def set_description(self, description):
+        self.setText(DESCRIPTION_COLUMN, description)
 
     def update_attenuation(self):
         self.setText(SIGNAL_ATT_COLUMN, "%.2f" % self.signal_attenuation())

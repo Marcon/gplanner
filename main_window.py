@@ -63,6 +63,7 @@ class MainWindow(QMainWindow):
         self.add_button = self.ui.add_splitter_button
         self.delete_button = self.ui.delete_splitter_button
         self.splitter_type_combo = self.ui.splitter_type_combo
+        self.description_edit = self.ui.description_edit
         self.fiber_length_spin = self.ui.fiber_length_spin
         self.init_tree()
         self.init_splitter_type_spin()
@@ -74,6 +75,7 @@ class MainWindow(QMainWindow):
         self.ui.action_file_save.triggered.connect(self.on_save)
         self.ui.action_file_save_as.triggered.connect(self.on_save_as)
         self.ui.action_file_open.triggered.connect(self.on_open)
+        self.ui.set_description_button.clicked.connect(self.on_set_equipment_description)
 
     def init_tree(self):
         self.root_item = RootItem()
@@ -100,8 +102,16 @@ class MainWindow(QMainWindow):
             return
         child = SPLITTER_TYPES[self.splitter_type_combo.currentIndex()][1](self.current_item,
                                                                            self.fiber_length_spin.value())
+        child.set_description(self.description_edit.text())
+        self.description_edit.clear()
         self.current_item.add_child(child)
         self.current_item.setExpanded(True)
+
+    def on_set_equipment_description(self):
+        if not self.current_item:
+            return
+        self.current_item.set_description(self.description_edit.text())
+        self.description_edit.clear()
 
     def on_delete_splitter(self):
         parent = self.current_item.parent
